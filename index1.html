@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#faf6ec">
+<title>Untuk Kamu</title>
+<style>
+:root{
+  --cream:#faf6ec;
+  --cream2:#f1e9d9;
+  --ink:#3a3229;
+  --ink-soft:#6d6357;
+  --gold:#b08d57;
+  --gold-soft:#dcc9a4;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{
+  margin:0;
+  background:var(--cream);
+  color:var(--ink);
+  font-family:Georgia,"Iowan Old Style","Palatino Linotype","Book Antiqua",Palatino,serif;
+  -webkit-font-smoothing:antialiased;
+  overflow:hidden;
+  overscroll-behavior:none;
+  background-image:
+    radial-gradient(circle at 15% 0%,rgba(216,195,155,.28),transparent 55%),
+    radial-gradient(circle at 100% 100%,rgba(216,195,155,.22),transparent 50%);
+  background-attachment:fixed;
+}
+.book{position:fixed;inset:0;display:flex;flex-direction:column}
+.book::before{
+  content:"";
+  position:absolute;
+  inset:9px;
+  border:1px solid var(--gold-soft);
+  opacity:.6;
+  pointer-events:none;
+  z-index:6;
+}
+.pages{position:relative;flex:1;overflow:hidden}
+.page{
+  position:absolute;
+  inset:0;
+  z-index:1;
+  display:flex;
+  flex-direction:column;
+  padding:34px 28px 26px;
+  overflow-y:auto;
+  -webkit-overflow-scrolling:touch;
+  opacity:0;
+  transform:translateY(18px);
+  pointer-events:none;
+  transition:opacity .6s ease,transform .62s cubic-bezier(.22,.61,.36,1);
+}
+.page > :first-child{margin-top:auto}
+.page > :last-child{margin-bottom:auto}
+.page.is-active{
+  opacity:1;
+  transform:none;
+  pointer-events:auto;
+  z-index:2;
+}
+.page.center{text-align:center}
+.page.is-active > *{animation:rise .75s cubic-bezier(.22,.61,.36,1) both}
+.page.is-active > :nth-child(1){animation-delay:.06s}
+.page.is-active > :nth-child(2){animation-delay:.14s}
+.page.is-active > :nth-child(3){animation-delay:.22s}
+.page.is-active > :nth-child(4){animation-delay:.30s}
+.page.is-active > :nth-child(5){animation-delay:.38s}
+.page.is-active > :nth-child(6){animation-delay:.46s}
+.page.is-active > :nth-child(7){animation-delay:.54s}
+.page.is-active > :nth-child(8){animation-delay:.62s}
+.page.is-active > .photo{animation:fadeIn 1s ease both;animation-delay:.35s}
+@keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.eyebrow{
+  margin:0 0 20px;
+  font-size:.68rem;
+  letter-spacing:.34em;
+  text-transform:uppercase;
+  color:var(--gold);
+}
+h1{
+  margin:0 0 6px;
+  font-size:2.45rem;
+  font-weight:400;
+  line-height:1.2;
+  letter-spacing:.015em;
+}
+h2{
+  margin:0 0 18px;
+  font-size:1.32rem;
+  font-weight:400;
+  line-height:1.45;
+  letter-spacing:.01em;
+}
+p{
+  margin:0 0 15px;
+  font-size:1.03rem;
+  line-height:1.9;
+  color:var(--ink-soft);
+}
+p:last-child{margin-bottom:0}
+.lead{font-size:1.06rem;line-height:1.9;color:var(--ink-soft);margin-top:4px}
+.say{color:var(--ink)}
+.fill{color:var(--gold);font-style:italic}
+.sign{
+  margin-top:26px;
+  font-size:1.02rem;
+  color:var(--gold);
+  letter-spacing:.06em;
+}
+.rule{display:flex;align-items:center;gap:12px;margin:26px 0}
+.rule::before,.rule::after{content:"";height:1px;flex:1}
+.rule::before{background:linear-gradient(90deg,transparent,var(--gold-soft))}
+.rule::after{background:linear-gradient(90deg,var(--gold-soft),transparent)}
+.rule span{color:var(--gold);font-size:.6rem;line-height:1}
+.center .rule{margin-left:auto;margin-right:auto;max-width:220px}
+.photo{
+  margin:26px auto 6px;
+  width:100%;
+  max-width:300px;
+  padding:10px;
+  background:#fffdf8;
+  border:1px solid var(--gold-soft);
+  box-shadow:0 18px 40px -24px rgba(90,70,40,.55);
+  transform:rotate(-.7deg);
+}
+.photo img{
+  display:block;
+  width:100%;
+  aspect-ratio:4/5;
+  object-fit:cover;
+  background:var(--cream2);
+}
+.photo figcaption{
+  padding-top:9px;
+  font-size:.68rem;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  color:var(--gold);
+  text-align:center;
+}
+.nav{
+  position:relative;
+  z-index:5;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:10px 26px calc(16px + env(safe-area-inset-bottom));
+  background:var(--cream);
+}
+.btn{
+  font-family:inherit;
+  border:1px solid var(--gold);
+  background:transparent;
+  color:var(--gold);
+  font-size:.78rem;
+  letter-spacing:.2em;
+  text-transform:uppercase;
+  padding:11px 22px;
+  border-radius:999px;
+  cursor:pointer;
+  transition:background .3s ease,color .3s ease,opacity .3s ease;
+}
+.btn:active{background:var(--gold);color:var(--cream)}
+.btn-round{
+  width:42px;
+  height:42px;
+  padding:0;
+  border-radius:50%;
+  border-color:var(--gold-soft);
+  font-size:1.05rem;
+  line-height:1;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex:0 0 auto;
+}
+.btn-round:disabled{opacity:.25;pointer-events:none}
+.btn-nav{margin-left:auto}
+.btn-nav:disabled{opacity:.25;pointer-events:none}
+.btn-text{
+  border:none;
+  background:none;
+  padding:0;
+  font-size:.78rem;
+  letter-spacing:.2em;
+  text-transform:uppercase;
+  color:var(--gold);
+  cursor:pointer;
+}
+.dots{display:flex;gap:7px}
+.dots i{
+  width:5px;
+  height:5px;
+  border-radius:50%;
+  background:var(--gold-soft);
+  transition:background .35s ease,transform .35s ease;
+}
+.dots i.on{background:var(--gold);transform:scale(1.5)}
+@media (min-width:520px){
+  .page{padding:44px 60px 34px}
+  h1{font-size:3rem}
+  h2{font-size:1.5rem}
+  p{font-size:1.08rem}
+}
+@media (prefers-reduced-motion:reduce){
+  .page,.page.is-active > *,.page.is-active > .photo{transition:none;animation:none}
+}
+</style>
+</head>
+<body>
+<div class="book">
+  <main class="pages" id="pages">
+
+    <!-- 1. SAMPUL -->
+    <section class="page center is-active">
+      <p class="eyebrow">Untuk Kamu</p>
+      <h1>Pelan-pelan,<br>Tapi Sungguh-sungguh</h1>
+      <div class="rule"><span>◆</span></div>
+      <p style="margin-top:25px;color:var(--gold)">
+  ♪ Nyalakan musik sebelum membaca
+</p>
+      <p class="sign">— dariku</p>
+    </section>
+
+    <!-- HAL 1 -->
+    <section class="page">
+      <p class="eyebrow">Halaman Satu</p>
+      <h2>Syukur yang Sederhana</h2>
+      <p class="say">
+        Kamu tahu nggak, aku tuh sering kepikiran betapa nggak semua orang
+        bisa punya orang kayak kamu di hidupnya.
+      </p>
+      <p>
+        Sampai sekarang aku nggak pernah tahu pasti kenapa kita dipertemukan,
+        dan aku juga nggak perlu tahu. Yang aku tahu, aku senang banget
+        kita dipertemukan.
+      </p>
+      <p>
+        Sejak kenal kamu, ada rasa tenang yang nggak aku duga sebelumnya.
+        Kayak hari-hariku jadi punya tempat pulang yang sederhana.
+      </p>
+      <p class="fill">
+        Aku cuma mau bilang: makasih, kamu udah ada.
+      </p>
+    </section>
+
+    <!-- HAL 2 -->
+    <section class="page">
+      <p class="eyebrow">Halaman Dua</p>
+      <h2>7 Oktober, di Kafe</h2>
+      <p class="say">
+        Hari ini kita cuma pergi ke kafe. Makan, minum, ngobrol.
+        Nggak ada yang mewah, nggak ada yang sengaja dibikin khusus.
+      </p>
+      <p>
+        Tapi jujur, aku pulang dengan perasaan yang penuh. Obrolannya enak,
+        aku nggak perlu jadi orang lain, dan kamu tetap jadi kamu —
+        yang buat aku tenang, yang buat aku mau mendengar.
+      </p>
+      <figure class="photo">
+        <img src="foto1.jpg" alt="Foto waktu kita di kafe">
+        <figcaption>7 Oktober, di kafe</figcaption>
+      </figure>
+      <p>
+        Kita nggak pernah menyebutnya apa-apa, dan aku nggak masalah.
+        Buat aku, itu tetap jadi salah satu hari yang paling aku syukuri.
+      </p>
+      <p class="fill">
+        Momen paling berarti ternyata nggak perlu ramai
+        — cukup kamu ada di sana.
+      </p>
+    </section>
+
+    <!-- HAL 3 -->
+    <section class="page">
+      <p class="eyebrow">Halaman Tiga</p>
+      <h2>Yang Aku Kagumi dari Kamu</h2>
+      <p class="say">
+        Ini yang aku suka, dan aku nggak lebay sama sekali.
+      </p>
+      <p>
+        <span class="say">Sabar.</span> Kamu nggak pernah bikin aku ngerasa
+        buru-buru. Aku juga ngerti bahwa kamu butuh waktu, dan itu
+        bukan hal yang mudah dilakukan orang.
+      </p>
+      <p>
+        <span class="say">Perhatian.</span> Cara kamu memperhatikan itu tidak
+        sering dipamerkan, tapi terasa. Kamu memperhatikan hal-hal kecil
+        dan itu yang bikin aku merasa sungguh-sungguh dijaga.
+      </p>
+      <p>
+        <span class="say">Dewasa.</span> Kamu bisa ngomong dengan jujur
+        tanpa nggak nyaman, dan aku belajar banyak dari cara kamu
+        menyikapi hal-hal kecil.
+      </p>
+      <p>
+        <span class="say">Cara berpikirmu.</span> Kamu banyak berpikir sebelum
+        bicara, dan itu bikin aku percaya kamu adalah orang yang
+        tahu apa yang sedang kamu lakukan.
+      </p>
+      <p class="fill">
+        Dan banyak hal lain yang sama antaraku dan kamu — tentang cara kita
+        menilai sesuatu, tentang apa yang kita anggap penting.
+        Itu bikin aku merasa nggak sendirian.
+      </p>
+    </section>
+
+    <!-- HAL 4 -->
+    <section class="page">
+      <p class="eyebrow">Halaman Empat</p>
+      <h2>Nyaman Tanpa Dipaksa</h2>
+      <p class="say">
+        Aku suka cara kita satu sama lain. Aku suka bahwa kamu nggak
+        pernah memaksa kita harus jadi apa. Aku suka karena kamu masih malu
+        kalau bertatapan terlalu lama, dan kamu masih menjaga batasmu.
+      </p>
+      <figure class="photo">
+        <img src="foto2.jpg" alt="Foto kita">
+        <figcaption></figcaption>
+      </figure>
+      <p>
+        Itu bukan hal yang perlu diperbaiki. Buat aku, itu bagian dari
+        ketulusan yang bikin aku nyaman — bahwa semua yang terjadi antara
+        aku dan kamu berjalan dengan caranya sendiri.
+      </p>
+      <p>
+        Aku nggak akan pernah memaksa apa pun. Aku mau kamu tetap merasa
+        aman, dan aku mau kita menikmati setiap tahap yang ada tanpa
+        harus disegerakan.
+      </p>
+      <p class="fill">
+        Aku pilih jalan pelan-pelan, 
+        dengan kamu.
+      </p>
+    </section>
+
+    <!-- HAL 5 -->
+    <section class="page">
+      <p class="eyebrow">Halaman Lima</p>
+      <h2>Terima Kasih yang Dalam</h2>
+      <p class="say">
+        Makasih sudah mau ketemu hari ini, makasih sudah mau meluangkan
+        waktu hanya untuk hal sederhana kayak gitu.
+      </p>
+      <p>
+        Makasih juga sudah memberi aku kesempatan untuk lebih mengenal
+        siapa kamu — bukan cuma versi kamu di layar, tapi versi kamu
+        yang sebenarnya.
+      </p>
+      <p>
+        Terima kasih atas perhatianmu — untuk hal-hal kecil yang mungkin
+        buatmu biasa, tapi buat aku berarti.
+      </p>
+      <p class="fill">
+        Terima kasih sudah hadir. Bukan hanya di percakapan kita,
+        tapi sungguh-sungguh ada untukku.
+      </p>
+    </section>
+
+    <!-- PENUTUP -->
+    <section class="page center">
+      <p class="eyebrow">Penutup</p>
+      <h2>Untuk Waktu ke Depan</h2>
+      <p>
+        Aku nggak mau janji-janji jauh, dan aku nggak mau kita bahas
+        hal-hal yang belum waktunya. Aku cuma mau kita jalan pelan-pelan,
+        tetap saling kenal, dan menjaga apa yang sudah kita punya.
+      </p>
+      <p>
+        Aku mau lebih banyak momen sederhana bareng kamu. Ngobrol panjang,
+        ketemu sesekali, dan hal-hal kecil yang lama-lama jadi
+        tempat kita pulang.
+      </p>
+      <div class="rule"><span>◆</span></div>
+      <p class="say" style="font-size:1.12rem">
+  Aku nggak tahu cerita kita akan sejauh apa.
+</p>
+
+<p>
+  Tapi kalau suatu hari nanti aku mengingat hari ini,
+  aku yakin aku akan selalu tersenyum.
+</p>
+
+<p>
+  Karena hari itu, aku pulang dengan satu perasaan sederhana:
+</p>
+
+<p class="fill">
+  aku senang pernah menghabiskan waktu bersamamu.
+</p>
+      <p class="sign">Dari aku, untuk kamu.</p>
+    </section>
+
+  </main>
+<nav class="nav">
+  <button class="btn btn-round" id="prev" aria-label="Halaman sebelumnya">‹</button>
+
+  <div class="dots" id="dots" aria-hidden="true"></div>
+
+  <button class="btn btn-text" id="musicBtn">
+    ♪ Musik
+  </button>
+
+  <button class="btn btn-text btn-nav" id="next" aria-label="Halaman berikutnya">
+    Lanjut
+  </button>
+</nav>
+</div>
+
+<script>
+(function(){
+  var pages = Array.prototype.slice.call(document.querySelectorAll('.page'));
+  var dotsBox = document.getElementById('dots');
+  var prev = document.getElementById('prev');
+  var next = document.getElementById('next');
+  var i = 0;
+
+  pages.forEach(function(_, n){
+    var d = document.createElement('i');
+    if(n === 0) d.className = 'on';
+    dotsBox.appendChild(d);
+  });
+  var dots = Array.prototype.slice.call(dotsBox.children);
+
+  function show(n){
+    n = Math.max(0, Math.min(pages.length - 1, n));
+    if(n === i) return;
+    pages[i].classList.remove('is-active');
+    i = n;
+    pages[i].classList.add('is-active');
+    pages[i].scrollTop = 0;
+    dots.forEach(function(d, k){ d.classList.toggle('on', k === i); });
+    prev.disabled = (i === 0);
+    next.disabled = (i === pages.length - 1);
+  }
+
+  prev.disabled = true;
+
+  prev.addEventListener('click', function(){ show(i - 1); });
+  next.addEventListener('click', function(){ show(i + 1); });
+
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'ArrowRight') show(i + 1);
+    if(e.key === 'ArrowLeft') show(i - 1);
+  });
+
+  var x0 = null, y0 = null, t0 = 0;
+  var stage = document.getElementById('pages');
+
+  stage.addEventListener('touchstart', function(e){
+    if(e.touches.length !== 1) return;
+    x0 = e.touches[0].clientX;
+    y0 = e.touches[0].clientY;
+    t0 = Date.now();
+  }, {passive:true});
+
+  stage.addEventListener('touchend', function(e){
+    if(x0 === null) return;
+    var t = e.changedTouches[0];
+    var dx = t.clientX - x0;
+    var dy = t.clientY - y0;
+    var dt = Date.now() - t0;
+    x0 = null;
+    if(Math.abs(dx) < 55) return;
+    if(Math.abs(dx) < Math.abs(dy) * 1.4) return;
+    if(dt > 700) return;
+    show(dx < 0 ? i + 1 : i - 1);
+  }, {passive:true});
+
+  document.querySelectorAll('a[href^="#"]').forEach(function(a){
+    a.addEventListener('click', function(ev){
+      var el = document.querySelector(a.getAttribute('href'));
+      if(el && el.classList.contains('page')){ ev.preventDefault(); show(pages.indexOf(el)); }
+    });
+  });
+  const bgm = document.getElementById('bgm');
+const musicBtn = document.getElementById('musicBtn');
+
+let playing = false;
+
+function fadeInMusic(){
+  let v = 0;
+  bgm.volume = 0;
+
+  const interval = setInterval(() => {
+    v += 0.02;
+
+    if(v >= 0.35){
+      v = 0.35;
+      clearInterval(interval);
+    }
+
+    bgm.volume = v;
+  },100);
+}
+
+musicBtn.addEventListener('click', async () => {
+  try{
+    if(!playing){
+      await bgm.play();
+      fadeInMusic();
+      musicBtn.textContent = '♫ Musik Aktif';
+      playing = true;
+    }else{
+      bgm.pause();
+      musicBtn.textContent = '♪ Musik';
+      playing = false;
+    }
+  }catch(err){}
+});
+})();
+</script>
+  <audio id="bgm" loop>
+  <source src="music.mp3" type="audio/mpeg">
+</audio>
+</body>
+  </html>
