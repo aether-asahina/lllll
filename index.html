@@ -219,7 +219,7 @@ p:last-child{margin-bottom:0}
     <!-- 1. SAMPUL -->
     <section class="page center is-active">
       <p class="eyebrow">Untuk Kamu</p>
-      <h1>Pelan-pelan,<br>Tapi Sungguh-sungguh</h1>
+      <h1>Pelan-pelan,<br>Tapi <span style="white-space:nowrap">Sungguh-sungguh</span></h1>
       <div class="rule"><span>◆</span></div>
       <p style="margin-top:25px;color:var(--gold)">
   ♪ Nyalakan musik sebelum membaca
@@ -254,7 +254,7 @@ p:last-child{margin-bottom:0}
       <p class="eyebrow">Halaman Dua</p>
       <h2>7 Oktober, di Kafe</h2>
       <p class="say">
-        Hari ini kita cuma pergi ke kafe. Makan, minum, ngobrol.
+        Hari itu kita cuma pergi ke kafe. Makan, minum, ngobrol.
         Nggak ada yang mewah, nggak ada yang sengaja dibikin khusus.
       </p>
       <p>
@@ -344,7 +344,7 @@ p:last-child{margin-bottom:0}
       <p class="eyebrow">Halaman Lima</p>
       <h2>Terima Kasih yang Dalam</h2>
       <p class="say">
-        Makasih sudah mau ketemu hari ini, makasih sudah mau meluangkan
+        Makasih sudah mau ketemu waktu itu, makasih sudah mau meluangkan
         waktu hanya untuk hal sederhana kayak gitu.
       </p>
       <p>
@@ -382,7 +382,7 @@ p:last-child{margin-bottom:0}
 </p>
 
 <p>
-  Tapi kalau suatu hari nanti aku mengingat hari ini,
+  Tapi kalau suatu hari nanti aku mengingat hari itu,
   aku yakin aku akan selalu tersenyum.
 </p>
 
@@ -506,7 +506,7 @@ musicBtn.addEventListener('click', async () => {
     if(!playing){
       await bgm.play();
       fadeInMusic();
-      musicBtn.textContent = '♫ Musik Aktif';
+      musicBtn.textContent = '♫ Musik';
       playing = true;
     }else{
       bgm.pause();
